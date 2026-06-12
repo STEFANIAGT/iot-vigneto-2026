@@ -40,20 +40,20 @@ Il sistema è progettato per supportare **N zone** in modo concorrente, risultan
 # Architettura e Componenti Principali
 
 ##  Architettura del Sistema
+┌────────────────────────┐        MQTT        ┌──────────────────────────────┐
+│   Sensore Ambientale   │ ─────────────────▶   Data Collector & Manager   
+│        (per zona)      │                    │   • Raccolta dati            │
+└────────────────────────┘                    │   • Analisi intelligente     │
+                                              │   • Invio comandi attuatori  │
+┌────────────────────────┐        MQTT        │   • Generazione eventi       │
+│  Regolatore Irrigazione│ ◀─────────────────                              
+│        (per zona)      │                                    
+└────────────────────────┘                                   │
+                                                             ▼
+                                                    ┌───────────────────┐
+                                                    │     Dashboard     │
+                                                    └───────────────────┘
 
-┌──────────────────────┐        MQTT        ┌──────────────────────────────┐
-│  Sensore Ambientale  │ ─────────────────▶ │   Data Collector & Manager   │
-│      (per zona)      │                    │   • Raccolta dati            │
-└──────────────────────┘                    │   • Analisi intelligente     │
-                                            │   • Invio comandi attuatori  │
-┌──────────────────────┐        MQTT        │   • Generazione eventi       │
-│ Regolatore Irrigaz.  │ ◀───────────────── │                              │
-│      (per zona)      │                    └──────────────┬──────────────┘
-└──────────────────────┘                                   │
-                                                           ▼
-                                                ┌───────────────────┐
-                                                │     Dashboard     │
-                                                └───────────────────┘
 
 
 - **Livello Edge (Smart Object IoT di Zona)**
