@@ -40,11 +40,25 @@ Il sistema è progettato per supportare **N zone** in modo concorrente, risultan
 # Architettura e Componenti Principali
 
 ##  Architettura del Sistema
-[Sensore] ──▶ [DCM] ──▶ [Dashboard]
-     ▲           │
-     └──── MQTT ─┘
-     │
-[Regolatore]
+                ┌──────────────────────────────┐
+                │   Data Collector & Manager   │
+                │   • Raccolta dati            │
+                │   • Analisi intelligente     │
+                │   • Comandi attuatori        │
+                │   • Eventi & Alert           │
+                └──────────────┬──────────────┘
+                               │ MQTT
+                               ▼
+┌────────────────────────┐                ┌────────────────────────┐
+│   Sensore Ambientale   │                │ Regolatore Irrigazione │
+│        (per zona)      │                │        (per zona)      │
+└────────────────────────┘                └────────────────────────┘
+                               ▲
+                               │ MQTT
+                               ▼
+                      ┌───────────────────┐
+                      │     Dashboard     │
+                      └───────────────────┘
 
 - **Livello Edge (Smart Object IoT di Zona)**
   - **Sensore Ambientale** (uno per zona):
