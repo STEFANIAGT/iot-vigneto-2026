@@ -43,17 +43,18 @@ Il sistema è progettato per supportare **N zone** in modo concorrente, risultan
 
 ┌──────────────────────┐        MQTT        ┌──────────────────────────────┐
 │  Sensore Ambientale  │ ─────────────────▶ │   Data Collector & Manager   │
-│  (per zona)          │                    │   • Raccolta dati            │
+│      (per zona)      │                    │   • Raccolta dati            │
 └──────────────────────┘                    │   • Analisi intelligente     │
-│   • Invio comandi attuatori │
+                                            │   • Invio comandi attuatori  │
 ┌──────────────────────┐        MQTT        │   • Generazione eventi       │
-│ Regolatore Irrigaz.  │ ◀─────────────────│                              │
-│ (per zona)           │                    └──────────────┬──────────────┘
+│ Regolatore Irrigaz.  │ ◀───────────────── │                              │
+│      (per zona)      │                    └──────────────┬──────────────┘
 └──────────────────────┘                                   │
-▼
-┌───────────────────┐
-│     Dashboard     │
-└───────────────────┘
+                                                           ▼
+                                                ┌───────────────────┐
+                                                │     Dashboard     │
+                                                └───────────────────┘
+
 
 - **Livello Edge (Smart Object IoT di Zona)**
   - **Sensore Ambientale** (uno per zona):
@@ -70,7 +71,7 @@ Il sistema è progettato per supportare **N zone** in modo concorrente, risultan
     - **Attuatore**: attivazione ON/OFF, controllo del livello (low / medium / high), modalità (continuous / rotation), policy orarie
 
 - **Livello di Connettività**
-  - MQTT su TCP/IP verso il broker del laboratorio (`155.185.4.4:7883`)
+  - MQTT su TCP/IP verso il broker del laboratorio 
 
 - **Livello Applicativo**
   - **Data Collector & Manager**: componente centrale che acquisisce la telemetria da tutte le zone, applica quattro regole intelligenti e invia i comandi di attuazione ai regolatori di irrigazione
@@ -150,7 +151,7 @@ Lo scenario è principalmente associato all'**acquisizione di dati di telemetria
 - Il supporto nativo per i messaggi retained (info di zona) e i livelli QoS adattati alla criticità dei dati
 - Le sottoscrizioni con wildcard permettono al DCM di ricevere dati da tutte le zone con una singola sottoscrizione
 
-Il broker MQTT utilizzato è il **broker del laboratorio UNIMORE** all'indirizzo `155.185.4.4:7883`.
+Il broker MQTT utilizzato è il **broker del laboratorio UNIMORE**.
 
 ---
 
