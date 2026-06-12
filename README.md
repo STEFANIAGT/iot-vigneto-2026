@@ -40,6 +40,7 @@ Il sistema è progettato per supportare **N zone** in modo concorrente, risultan
 # Architettura e Componenti Principali
 
 ##  Architettura del Sistema
+
                 ┌──────────────────────────────┐
                 │   Data Collector & Manager   │
                 │   • Raccolta dati            │
@@ -59,6 +60,7 @@ Il sistema è progettato per supportare **N zone** in modo concorrente, risultan
                       ┌───────────────────┐
                       │     Dashboard     │
                       └───────────────────┘
+
 
 - **Livello Edge (Smart Object IoT di Zona)**
   - **Sensore Ambientale** (uno per zona):
