@@ -50,6 +50,15 @@ zone_irrigation_data = {}
 # zone_id -> descrittore della zona
 zone_descriptors = {}
 
+# Registro storico degli eventi:
+# lista di dict con: timestamp, zone_id, event_type, detail
+event_log = []
+
+# Timestamp dell'ultimo riepilogo stampato
+last_log_print_time = time.time()
+
+last_time_policy_activation = {}  # zone_id -> ora dell'ultima attivazione
+
 # MQTT callbacks: funzioni richiamate automaticamente dal client MQTT
 # quando avvengono eventi come connessione al broker o ricezione di messaggi.
 
