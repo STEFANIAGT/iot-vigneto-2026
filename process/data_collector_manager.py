@@ -85,7 +85,13 @@ def on_connect(client, userdata, flags, rc):
     print(f"[DCM] Subscribed to: {env_topic}")
 
 # Sottoscrizione ai dati sullo stato dell’irrigazione di tutte le zone
-...
+irr_topic = "{0}/+/{1}/{2}".format(
+        MqttConfigurationParameters.BASIC_TOPIC,
+        MqttConfigurationParameters.SENSOR_TOPIC,
+        MqttConfigurationParameters.IRRIGATION_TOPIC
+    )
+    mqtt_client.subscribe(irr_topic)
+    print(f"[DCM] Subscribed to: {irr_topic}")
 
 def on_message(client, userdata, message):
     message_payload = str(message.payload.decode("utf-8"))
