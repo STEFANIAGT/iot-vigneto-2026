@@ -123,6 +123,11 @@ def on_message(client, userdata, message):
         print(f"[DCM] Unmanaged topic: {topic}")
         # Messaggio di log per segnalare che il topic ricevuto non è gestito dal DCM
 
+ # Stampa il riepilogo del log ogni EVENT_LOG_PRINT_INTERVAL_SEC secondi
+    if time.time() - last_log_print_time >= EVENT_LOG_PRINT_INTERVAL_SEC:
+        print_event_log_summary()
+        last_log_print_time = time.time()
+
 # Gestori dei messaggi: funzioni che elaborano i payload ricevuti dai vari topic MQTT
 
 def handle_zone_info_message(topic, payload):
