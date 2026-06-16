@@ -171,7 +171,19 @@ def handle_environmental_message(topic, payload):
 def handle_irrigation_message(topic, payload):
     """Gestisce gli aggiornamenti di stato del regolatore di irrigazione."""
     try:
-      ...
+          data = json.loads(payload)
+        zone_id = extract_zone_id_from_topic(topic)
+        zone_irrigation_data[zone_id] = data
+
+        status = "ACTIVE" if data["is_active"] else "INACTIVE"
+        print(f"[DCM] Irrigation Status - Zone: {zone_id} | "
+              f"Status: {status} | "
+              f"Level: {data['irrigation_level']} | "
+              f"Type: {data['irrigation_type']} | "
+              f"Battery: {data['battery_level']}%")
+
+    except Exception as e:
+        print(f"[DCM] Error processing irrigation data from {topic}: {e}")
 
 
 # Regole intelligenti
