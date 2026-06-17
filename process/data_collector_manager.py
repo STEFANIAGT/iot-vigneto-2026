@@ -3,13 +3,13 @@
 # e invia comandi ai controller di irrigazione.
 #
 # Subscriptions:
-#   vigneto/+/info                         -> ZoneDescriptor (retained)
-#   vigneto/+/sensor/environmental         -> Dati del sensore ambientale
-#   vigneto/+/sensor/irrigation            -> Stato del controller di irrigazione
-#
+#  /iot/user/331844@studenti.unimore.it/+/info -> ZoneDescriptor (retained)
+#  /iot/user/331844@studenti.unimore.it/+/sensor/environmental -> Dati del sensore ambientale
+#  /iot/user/331844@studenti.unimore.it/+/sensor/irrigation -> Stato del controller di irrigazione
+
 # Commands published:
-#   vigneto/<zone_id>/command/irrigation   -> Comando JSON ON/OFF/set_level
-#
+# /iot/user/331844@studenti.unimore.it/<zone_id>/command/irrigation -> Comando JSON ON/OFF/set_level
+
 # Intelligent Rules applied:
 #   Regola 1 – Stress Idrico: umidità < 30% E pioggia < 2mm → attiva irrigazione HIGH
 #   Regola 2 – Rischio Fungino: umidità > 85% E temperatura > 20°C → disattiva irrigazione + alert
