@@ -206,6 +206,10 @@ def apply_water_stress_rule(zone_id, env_data):
             "reason": "water_stress"
         })
 
+        log_event(zone_id, "STRESS_IDRICO",
+              f"Humidity={env_data['humidity']} Rainfall={env_data['rainfall']}")
+...
+
 def apply_fungal_risk_rule(zone_id, env_data):
     """
     Regola 2 – Rischio Fungino: umidità > 85% E temperatura > 20°C → disattiva irrigazione + alert.
@@ -222,6 +226,9 @@ def apply_fungal_risk_rule(zone_id, env_data):
             "reason": "fungal_risk"
         })
 
+        log_event(zone_id, "RISCHIO_FUNGINO",
+              f"Humidity={env_data['humidity']} Temp={env_data['temperature']}")
+
 
 def apply_fertilization_rule(zone_id, env_data):
     """
@@ -235,6 +242,11 @@ def apply_fertilization_rule(zone_id, env_data):
               f"Temp={env_data['temperature']}°C Humidity={env_data['humidity']}% "
               f"UV={env_data['uv_index']} -> Fertilization recommended")
 
+        log_event(zone_id, "CONCIMAZIONE_CONSIGLIATA",
+                  f"Temp={env_data['temperature']}°C Umidità={env_data['humidity']}% UV={env_data['uv_index']}")
+
+
+
 
 def apply_critical_battery_rule(zone_id, env_data):
     """
@@ -243,6 +255,66 @@ def apply_critical_battery_rule(zone_id, env_data):
     if env_data["battery_level"] < BATTERY_CRITICAL_THRESHOLD:
         print(f"[DCM] RULE 4 - CRITICAL BATTERY in Zone {zone_id}! "
               f"Battery={env_data['battery_level']}% -> Maintenance required!")
+
+        log_event(zone_id, "BATTERIA_CRITICA",
+          f"Battery={env_data['battery_level']}")
+
+# REGISTRO STORICO EVENTI
+def log_event(zone_id, event_type, detail):
+    """Aggiunge un evento al registro storico."""
+    event = {
+        "timestamp": int(time.time()),
+        "timestamp_str": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        "zone_id": zone_id,
+        "event_type": event_type,
+        "detail": detail
+    }
+    event_log.append(event)
+
+
+def print_event_log_summary():
+    """Stampa il riepilogo del registro storico degli eventi."""
+    print("\n" + "=" * 70)
+    print(f" RIEPILOGO EVENTI — {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 70)
+
+    if not event_log:
+        print("  Nessun evento registrato.")
+    else:
+        # Conta gli eventi per tipo
+        counts = {}
+        for e in event_log:
+            key = (e["zone_id"], e["event_type"])
+            counts[key] = counts.get(key, 0) + 1
+
+        print(f"  Totale eventi registrati: {len(event_log)}")
+        print()
+
+        # Stampa contatori per zona e tipo
+        for (zone_id, event_type), count in sorted(counts.items()):
+            print(f"  [{zone_id}]  {event_type:<30} x{count}")
+
+        print()
+
+        # Stampa gli ultimi 5 eventi
+        print("  Ultimi 5 eventi:")
+        for e in event_log[-5:]:
+            print(f"  {e['timestamp_str']}  [{e['zone_id']}]  {e['event_type']}")
+            print(f"    → {e['detail']}")
+
+        # Stato attuale delle zone
+        print()
+        print("  Stato attuale delle zone:")
+        for zone_id, env in zone_environmental_data.items():
+            irr = zone_irrigation_data.get(zone_id, {})
+            irr_status = "ATTIVA" if irr.get("is_active", False) else "INATTIVA"
+            print(f"  [{zone_id}]  Temp: {env['temperature']}°C | "
+                  f"Umidità: {env['humidity']}% | "
+                  f"Batteria sensore: {env['battery_level']}% | "
+                  f"Irrigazione: {irr_status}")
+
+    print("=" * 70 + "\n")
+
 
 # Modulo che invia i comandi: Gestore responsabile dell’invio dei comandi ai dispositivi/zone
 ...
