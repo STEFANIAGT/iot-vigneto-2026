@@ -176,7 +176,7 @@ Il broker MQTT utilizzato è il **broker del laboratorio UNIMORE**.
     "software_version": "1.0.0"
   }
   ```
-- **Livello QoS**: 0
+- **Livello QoS**: 1
 - **Retain Flag**: true (garantisce che il DCM e qualsiasi sottoscrittore tardivo ricevano sempre l'ultima registrazione della zona anche dopo una riconnessione)
 
 ---
