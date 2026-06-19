@@ -154,6 +154,9 @@ mqtt_client.loop_start()
 # Loop principale di telemetria
 message_count = 0
 while MESSAGE_LIMIT == 0 or message_count < MESSAGE_LIMIT:
+        if environmental_sensor.battery_level <= 0:
+        print(f"[{ZONE_ID}] Batteria esaurita - sensore spento")
+        break
     publish_environmental_data()
     publish_irrigation_status()
     message_count += 1
