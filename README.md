@@ -352,7 +352,7 @@ Opzione B – HiveMQ Cloud (gratuito, niente installazione)
   - Evento Stress Idrico → comando irrigazione HIGH
   - Evento Rischio Malattia → disattivazione irrigazione + allerta
   - Evento Concimazione Consigliata → notifica
-- Integrazione dei dati nella dashboard (grafici, indicatori, storico)
+- Integrazione dei dati nella dashboard da terminale
 
 ## Giulia Tramontano — Automazione dell'Irrigazione e Gestione Attuatori
 
