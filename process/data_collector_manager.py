@@ -208,7 +208,24 @@ def apply_water_stress_rule(zone_id, env_data):
 
         log_event(zone_id, "STRESS_IDRICO",
               f"Humidity={env_data['humidity']} Rainfall={env_data['rainfall']}")
-...
+
+def apply_time_policy_rule(zone_id):
+    current_hour = time.localtime().tm_hour
+
+    # Irrigazione permessa solo tra le 6 e le 8
+    if 6 <= current_hour <= 8:
+        # Attiva solo se non è già stata attivata in questa ora
+        if last_time_policy_activation.get(zone_id) != current_hour:
+            last_time_policy_activation[zone_id] = current_hour
+            send_irrigation_command(zone_id, {
+                "action": "activate",
+                "level": IrrigationController.LEVEL_MEDIUM,
+                "type": IrrigationController.TYPE_ROTATION,
+                "reason": "time_policy"
+            })
+            log_event(zone_id, "POLICY_ORARIA",
+                      f"Irrigazione attivata alle {current_hour}:00")
+            print(f"[DCM] POLICY ORARIA - Zona {zone_id}: irrigazione attivata alle {current_hour}:00")
 
 def apply_fungal_risk_rule(zone_id, env_data):
     """
@@ -317,7 +334,20 @@ def print_event_log_summary():
 
 
 # Modulo che invia i comandi: Gestore responsabile dell’invio dei comandi ai dispositivi/zone
-...
+
+def send_irrigation_command(zone_id, command_dict):
+    """Pubblica un comando JSON al regolatore di irrigazione di una specifica zona."""
+
+    target_topic = "{0}/{1}/{2}/{3}".format(
+        MqttConfigurationParameters.BASIC_TOPIC,
+        zone_id,
+        MqttConfigurationParameters.COMMAND_TOPIC,
+        MqttConfigurationParameters.IRRIGATION_TOPIC
+    )
+    payload = json.dumps(command_dict)
+    mqtt_client.publish(target_topic, payload, qos=0, retain=False)
+    print(f"[DCM] Command sent: Topic: {target_topic} Payload: {payload}")
+    # Messaggio di log che conferma l’invio del comando, mostrando topic e payload utilizzati
 
 # Raccolta di funzioni di utilità a supporto delle operazioni del DCM
 
