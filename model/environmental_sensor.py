@@ -39,6 +39,23 @@ class EnvironmentalSensor:
         self.timestamp = int(time.time())
         self.update_measurements()
 
+    def to_json(self):
+    timestamp = self.timestamp
+
+    senml_payload = [
+        { "n": "iot.vigneto.temperature",  "u": "Cel",   "v": self.temperature,  "t": timestamp },
+        { "n": "iot.vigneto.humidity",     "u": "%RH",   "v": self.humidity,     "t": timestamp },
+        { "n": "iot.vigneto.luminosity",   "u": "lux",   "v": self.luminosity,   "t": timestamp },
+        { "n": "iot.vigneto.wind_speed",   "u": "km/h",  "v": self.wind_speed,   "t": timestamp },
+        { "n": "iot.vigneto.uv_index",     "u": "uv",    "v": self.uv_index,     "t": timestamp },
+        { "n": "iot.vigneto.rainfall",     "u": "mm",    "v": self.rainfall,     "t": timestamp },
+        { "n": "iot.vigneto.pm10",         "u": "ug/m3", "v": self.pm10,         "t": timestamp },
+        { "n": "iot.vigneto.battery",      "u": "%",     "v": self.battery_level,"t": timestamp }
+    ]
+
+    return json.dumps(senml_payload)
+
+
     def update_measurements(self):
         self.temperature = round(random.uniform(self.TEMP_MIN, self.TEMP_MAX), 2)
         self.humidity = round(random.uniform(self.HUMIDITY_MIN, self.HUMIDITY_MAX), 2)
